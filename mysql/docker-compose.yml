@@ -1,0 +1,21 @@
+
+version: "3"
+
+services:
+  etcd1:
+      image: docker.io/mysql:8.1
+      restart: always
+      command:
+        --lower_case_table_names=1
+        --character-set-server=utf8mb4
+        --collation-server=utf8mb4_general_ci
+        --explicit_defaults_for_timestamp=true
+      volumes:
+        #- ./mysql-data/conf:/etc/mysql.d
+        - ./mysql-data/data:/var/lib/mysql
+      environment:
+        - TZ=Asia/Shanghai
+        - MYSQL_ROOT_PASSWORD=${MY_ROOT_PASSWD}
+        - MYSQL_DATABASE=test
+      ports:
+          - "3306:3306"

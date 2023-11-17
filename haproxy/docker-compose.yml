@@ -1,0 +1,14 @@
+
+version: "3"
+
+services:
+  haproxy:
+    image: docker.io/haproxy:2.8-alpine
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai    
+    volumes:
+      - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+    ports:
+      - "2020:3391"
+

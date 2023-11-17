@@ -1,0 +1,33 @@
+version: "3"
+
+# 3-nodes etcd cluster
+
+services:
+  etcd1:
+      image: quay.io/coreos/etcd:v3.5.10
+      restart: always
+      volumes:
+          - ./etcd-data:/etcd-data
+      environment:
+        - TZ=Asia/Shanghai
+        - ETCDCTL_API=3
+        - ETCD_NAME=etcd-node1
+        - ALLOW_NONE_AUTHENTICATION=yes
+        - ETCD_DATA_DIR=/etcd-data
+        - ETCD_QUOTA_BACKEND_BYTES=4294967296   # max 4GB db file
+        - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+        - ETCD_ADVERTISE_CLIENT_URLS=http://${HOST_1}:2379
+        - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+        - ETCD_ADVERTISE_PEER_URLS=http://${HOST_1}:2380
+        - ETCD_INITIAL_CLUSTER_TOKEN=U3cgs6ZBxENH1
+        - ETCD_INITIAL_CLUSTER_STATE=existing
+        - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://${HOST_1}:2380
+        - ETCD_INITIAL_CLUSTER=etcd-node1=http://${HOST_1},etcd-node2=http://${HOST_2}:2380,etcd-node3=http://${HOST_3}:2380
+        - ETCD_HEARTBEAT_INTERVAL=250
+        - ETCD_ELECTION_TIMEOUT=1250
+        - ETCD_AUTO_COMPACTION_MODE=periodic
+        - ETCD_AUTO_COMPACTION_RETENTION=24h
+      ports:
+          - "2379:2379"
+          - "2380:2380"
+
