@@ -1,0 +1,16 @@
+
+version: "3"
+
+services:
+  etcd1:
+      image: docker.io/redis:7-alpine
+      restart: always
+      command: redis-server /etc/redis.conf
+      volumes:
+        - ./redis-data:/data
+        - ./redis.conf:/etc/redis.conf
+      environment:
+        - TZ=Asia/Shanghai
+      ports:
+          - "16379:6379"
+
